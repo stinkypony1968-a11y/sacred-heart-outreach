@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Providence Sacred Heart Medical Center — Outreach Map</title>
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            font-family: 'Inter', sans-serif;
+            background: #f8f9fa;
+            overflow: hidden;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #002B5C 0%, #1a4d8a 100%);
+            color: white;
+            padding: 16px 24px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            z-index: 100;
+        }
+
+        .header-left {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .header-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 22px;
+            font-weight: 700;
+            margin: 0 0 4px 0;
+            color: #ffffff;
+        }
+
+        .header-subtitle {
+            font-size: 13px;
+            opacity: 0.9;
+            margin: 0;
+        }
+
+        .header-branding {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 11px;
+            opacity: 0.85;
+            white-space: nowrap;
+        }
+
+        .jnj-badge {
+            background: rgba(235, 23, 0, 0.2);
+            border: 1px solid #EB1700;
+            border-radius: 4px;
+            padding: 4px 8px;
+            font-weight: 600;
+            color: #FFB3A7;
+        }
+
+        .header-right {
+            font-size: 12px;
+            opacity: 0.9;
+            white-space: nowrap;
+        }
+
+        /* Main Container */
+        .container {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 320px;
+            background: white;
+            border-right: 1px solid #e5e7eb;
+            overflow-y: auto;
+            padding: 20px;
+            box-shadow: 2px 0 8px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease;
+            z-index: 50;
+        }
+
+        .sidebar-toggle {
+            display: none;
+            position: absolute;
+            left: 12px;
+            top: 100px;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 4px;
+            padding: 8px;
+            cursor: pointer;
+            z-index: 60;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar-toggle:hover {
+            background: #f3f4f6;
+        }
+
+        /* Stats Card */
+        .stats-card {
+            background: linear-gradient(135deg, #0077C8 0%, #0056a0 100%);
+            border-radius: 8px;
+            padding: 16px;
+            color: white;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 6px rgba(0, 119, 200, 0.15);
+        }
+
+        .stats-card h3 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            opacity: 0.95;
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            margin-bottom: 8px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .stat-row:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .stat-value {
+            font-weight: 600;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* Legend */
+        .legend-section {
+            margin-bottom: 24px;
+        }
+
+        .legend-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: #1f2937;
+            margin-bottom: 12px;
+            letter-spacing: 0.5px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 12px;
+            margin-bottom: 10px;
+            padding: 6px 0;
+        }
+
+        .legend-marker {
+            flex-shrink: 0;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        .legend-marker.sacred-heart {
+            background: #EB1700;
+            box-shadow: 0 0 0 2px rgba(235, 23, 0, 0.2);
+        }
+
+        .legend-marker.csc {
+            background: #9333ea;
+        }
+
+        .legend-marker.tsc {
+            background: #0077C8;
+        }
+
+        .legend-marker.psc {
+            background: #10b981;
+        }
+
+        .legend-marker.spoke {
+            background: #f97316;
+        }
+
+        .legend-marker.cah {
+            border: 2px solid #ef4444;
+            background: transparent;
+        }
+
+        .legend-marker.tribal {
+            background: #06b6d4;
+        }
+
+        .legend-marker.lifeflight {
+            background: #f59e0b;
+        }
+
+        .legend-line {
+            height: 2px;
+            flex: 1;
+            border-radius: 1px;
+        }
+
+        .legend-line.ems {
+            background: #3B82F6;
+        }
+
+        .legend-circle {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+        }
+
+        .legend-circle.radius-100 {
+            border: 2px solid #3B82F6;
+            background: rgba(59, 130, 246, 0.1);
+        }
+
+        .legend-circle.radius-200 {
+            border: 2px dashed #93c5fd;
+            background: transparent;
+        }
+
+        /* Facility Lists */
+        .facility-list {
+            margin-top: 20px;
+        }
+
+        .facility-zone {
+            margin-bottom: 16px;
+        }
+
+        .zone-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 12px;
+            background: #f3f4f6;
+            border-radius: 6px;
+            cursor: pointer;
+            user-select: none;
+            transition: background 0.2s ease;
+        }
+
+        .zone-header:hover {
+            background: #e5e7eb;
+        }
+
+        .zone-header-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 12px;
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .zone-count {
+            font-size: 11px;
+            background: #d1d5db;
+            color: #374151;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+
+        .zone-toggle {
+            margin-left: 8px;
+            transition: transform 0.2s ease;
+        }
+
+        .zone-toggle.open {
+            transform: rotate(180deg);
+        }
+
+        .zone-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .zone-content.open {
+            max-height: 800px;
+        }
+
+        .facility-item {
+            padding: 10px 12px;
+            border-left: 3px solid #dbeafe;
+            margin-top: 8px;
+            background: #f9fafb;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 11px;
+        }
+
+        .facility-item:hover {
+            background: #f0f9ff;
+            border-left-color: #0077C8;
+        }
+
+        .facility-name {
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 4px;
+            font-size: 11px;
+        }
+
+        .facility-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 10px;
+            color: #6b7280;
+        }
+
+        .facility-badge {
+            display: inline-block;
+            background: #dbeafe;
+            color: #0077C8;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-weight: 500;
+            font-size: 9px;
+        }
+
+        /* Map Container */
+        .map-container {
+            flex: 1;
+            position: relative;
+            background: #e5e7eb;
+        }
+
+        #map {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Leaflet Overrides */
+        .leaflet-popup-content {
+            font-family: 'Inter', sans-serif;
+            font-size: 12px;
+            line-height: 1.4;
+        }
+
+        .leaflet-popup-content-wrapper {
+            border-radius: 6px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .popup-title {
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 6px;
+            font-size: 12px;
+        }
+
+        .popup-info {
+            color: #4b5563;
+            margin: 4px 0;
+            font-size: 11px;
+        }
+
+        .popup-badge {
+            display: inline-block;
+            background: #EB1700;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 10px;
+            font-weight: 600;
+            margin-top: 4px;
+        }
+
+        /* Footer */
+        .footer {
+            background: #1f2937;
+            color: #e5e7eb;
+            padding: 12px 24px;
+            font-size: 11px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid #374151;
+        }
+
+        .footer-left {
+            flex: 1;
+        }
+
+        .footer-right {
+            text-align: right;
+            opacity: 0.8;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header {
+                padding: 12px 16px;
+            }
+
+            .header-title {
+                font-size: 18px;
+            }
+
+            .header-subtitle {
+                font-size: 12px;
+            }
+
+            .header-right {
+                display: none;
+            }
+
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                height: auto;
+                max-height: 200px;
+                border-right: none;
+                border-bottom: 1px solid #e5e7eb;
+                position: relative;
+            }
+
+            .sidebar.collapsed {
+                max-height: 50px;
+            }
+
+            .sidebar-toggle {
+                display: block;
+            }
+
+            .sidebar-content {
+                display: none;
+            }
+
+            .sidebar.open .sidebar-content {
+                display: block;
+            }
+
+            #map {
+                min-height: 300px;
+            }
+
+            .footer {
+                flex-direction: column;
+                gap: 8px;
+                text-align: center;
+            }
+
+            .footer-left, .footer-right {
+                flex: auto;
+            }
+        }
+
+        /* Print Styles */
+        @media print {
+            .header, .footer, .sidebar-toggle {
+                display: none;
+            }
+
+            .container {
+                height: auto;
+            }
+
+            .sidebar {
+                display: none;
+            }
+
+            .map-container {
+                height: 600px;
+            }
+
+            body {
+                background: white;
+            }
+        }
+
+        /* Animations */
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(235, 23, 0, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(235, 23, 0, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(235, 23, 0, 0);
+            }
+        }
+
+        .sacred-heart-pulse {
+            animation: pulse 2s infinite;
+        }
+
+        /* Scrollbar Styling */
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .sidebar::-webkit-scrollbar-track {
+            background: #f3f4f6;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: #d1d5db;
+            border-radius: 3px;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb:hover {
+            background: #9ca3af;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="header-left">
+            <h1 class="header-title">Providence Sacred Heart Medical Center — Outreach Map</h1>
+            <p class="header-subtitle">Spokane, WA | CSC | 100 & 200 Mile Service Radii</p>
+        </div>
+        <div class="header-branding">
+            <span class="jnj-badge">J&J MedTech</span>
+            <span>Cerenovus</span>
+        </div>
+        <div class="header-right">Prepared for Dr. Yiping Li</div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar" id="sidebar">
+            <button class="sidebar-toggle" id="sidebarToggle">☰</button>
+
+            <div class="sidebar-content">
+                <!-- Stats Card -->
+                <div class="stats-card">
+                    <h3>SERVICE AREA SUMMARY</h3>
+                    <div class="stat-row">
+                        <span>0–100 miles:</span>
+                        <span class="stat-value" id="stat-zone1">–</span>
+                    </div>
+                    <div class="stat-row">
+                        <span>100–200 miles:</span>
+                        <span class="stat-value" id="stat-zone2">–</span>
+                    </div>
+                    <div class="stat-row">
+                        <span>Total in radius:</span>
+                        <span class="stat-value" id="stat-total">–</span>
+                    </div>
+                </div>
+
+                <!-- Legend -->
+                <div class="legend-section">
+                    <div class="legend-title">Legend</div>
+
+                    <div class="legend-item">
+                        <div class="legend-marker sacred-heart"></div>
+                        <span>Sacred Heart Hub</span>
+                    </div>
+
+                    <div class="legend-item">
+                        <div class="legend-marker csc"></div>
+                        <span>Comprehensive Stroke Center</span>
+                    </div>
+
+                    <div class="legend-item">
+                        <div class="legend-marker tsc"></div>
+                        <span>Thrombectomy-Capable Center</span>
+                    </div>
+
+                    <div class="legend-item">
+                        <div class="legend-marker psc"></div>
+                        <span>Primary Stroke Center</span>
+                    </div>
+
+                    <div class="legend-item">
+                        <div class="legend-marker spoke"></div>
+                        <span>Spoke Referral Hospital</span>
+                    </div>
+
+                    <div class="legend-item">
+                        <div class="legend-marker cah"></div>
+                        <span>Critical Access Hospital</span>
+                    </div>
+
+                    <div class="legend-item">
+                        <div class="legend-marker tribal"></div>
+                        <span>Tribal Health Facility</span>
+                    </div>
+
+                    <div class="legend-item">
+                        <div class="legend-marker lifeflight"></div>
+                        <span>Life Flight Base</span>
+                    </div>
+
+                    <div class="legend-item">
+                        <div class="legend-line ems"></div>
+                        <span>EMS Route</span>
+                    </div>
+
+                    <div class="legend-item">
+                        <div class="legend-circle radius-100"></div>
+                        <span>100-mile radius</span>
+                    </div>
+
+                    <div class="legend-item">
+                        <div class="legend-circle radius-200"></div>
+                        <span>200-mile radius</span>
+                    </div>
+                </div>
+
+                <!-- Facility Lists -->
+                <div class="facility-list" id="facilityList"></div>
+            </div>
+        </div>
+
+        <!-- Map -->
+        <div class="map-container">
+            <div id="map"></div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <div class="footer-left">
+            <strong>Cerenovus</strong> | J&J MedTech Neurovascular | PNW Territory
+        </div>
+        <div class="footer-right">
+            Generated <span id="generatedDate"></span> | For internal use only
+        </div>
+    </div>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <script>
+        // ===== EMBEDDED DATA =====
+
+        const sacredHeart = {
+            name: "PROVIDENCE SACRED HEART MEDICAL CENTER",
+            city: "Spokane",
+            state: "WA",
+            lat: 47.6588,
+            lng: -117.4260,
+            certification: "CSC",
+            hubId: 13
+        };
+
+        const hospitals = [
+            { name: "PROVIDENCE SACRED HEART MEDICAL CENTER", city: "Spokane", state: "WA", lat: 47.6588, lng: -117.4260, certification: "CSC" },
+            { name: "MULTICARE DEACONESS HOSPITAL", city: "Spokane", state: "WA", lat: 47.6401, lng: -117.4101, certification: "PSC" },
+            { name: "KOOTENAI HEALTH", city: "Coeur d'Alene", state: "ID", lat: 47.6901, lng: -116.7801, certification: "TSC" },
+            { name: "PROVIDENCE ST PATRICK HOSPITAL", city: "Missoula", state: "MT", lat: 46.8721, lng: -114.0135, certification: "TSC" },
+            { name: "COMMUNITY MEDICAL CENTER", city: "Missoula", state: "MT", lat: 46.8722, lng: -114.0056, certification: "PSC" },
+            { name: "ST JOSEPHS REGIONAL MEDICAL CENTER", city: "Lewiston", state: "ID", lat: 46.4189, lng: -117.0178, certification: "PSC" },
+            { name: "KADLEC REGIONAL MEDICAL CENTER", city: "Richland", state: "WA", lat: 46.2856, lng: -119.2845, certification: "TSC" },
+            { name: "CENTRAL WASHINGTON HOSPITAL", city: "Wenatchee", state: "WA", lat: 47.4235, lng: -120.3103, certification: "PSC" },
+            { name: "YAKIMA VALLEY MEMORIAL HOSPITAL", city: "Yakima", state: "WA", lat: 46.6021, lng: -120.5059, certification: "PSC" },
+            { name: "PEACEHEALTH ST JOSEPH MEDICAL CENTER", city: "Bellingham", state: "WA", lat: 48.7519, lng: -122.4787, certification: "TSC" },
+            { name: "PROVIDENCE ST MARY MEDICAL CENTER", city: "Walla Walla", state: "WA", lat: 46.0646, lng: -118.3430, certification: "PSC" },
+            { name: "LOGAN HEALTH", city: "Kalispell", state: "MT", lat: 48.1920, lng: -114.3168, certification: "TSC" },
+            { name: "BENEFIS HEALTH SYSTEM", city: "Great Falls", state: "MT", lat: 47.5053, lng: -111.3008, certification: "TSC" },
+            { name: "EASTERN IDAHO REGIONAL MEDICAL CENTER", city: "Idaho Falls", state: "ID", lat: 43.4895, lng: -112.0339, certification: "TSC" },
+            { name: "BOZEMAN HEALTH DEACONESS HOSPITAL", city: "Bozeman", state: "MT", lat: 45.6803, lng: -111.0367, certification: "TSC" },
+            { name: "ST LUKES BOISE MEDICAL CENTER", city: "Boise", state: "ID", lat: 43.6018, lng: -116.2054, certification: "CSC" },
+            { name: "SAINT ALPHONSUS REGIONAL MEDICAL CENTER", city: "Boise", state: "ID", lat: 43.6186, lng: -116.2247, certification: "CSC" },
+            { name: "ST PETERS HEALTH", city: "Helena", state: "MT", lat: 46.5927, lng: -112.0361, certification: "PSC" },
+            { name: "BILLINGS CLINIC", city: "Billings", state: "MT", lat: 45.7849, lng: -108.5039, certification: "CSC" },
+            { name: "PORTNEUF MEDICAL CENTER", city: "Pocatello", state: "ID", lat: 42.8713, lng: -112.4455, certification: "PSC" },
+            { name: "ST LUKES MERIDIAN MEDICAL CENTER", city: "Meridian", state: "ID", lat: 43.6008, lng: -116.3915, certification: "TSC" },
+            { name: "ST JAMES HEALTHCARE", city: "Butte", state: "MT", lat: 46.0038, lng: -112.5348, certification: "PSC" },
+            { name: "ST LUKES MAGIC VALLEY", city: "Twin Falls", state: "ID", lat: 42.5558, lng: -114.4701, certification: "PSC" },
+            { name: "SAINT VINCENT HEALTHCARE", city: "Billings", state: "MT", lat: 45.7801, lng: -108.5101, certification: "PSC" },
+            { name: "WEST VALLEY MEDICAL CENTER", city: "Caldwell", state: "ID", lat: 43.6629, lng: -116.6874, certification: "PSC" },
+        ];
+
+        const spokeHospitals = [
+            { name: "Pullman Regional", city: "Pullman", state: "WA", lat: 46.7324, lng: -117.1817, annualTransfers: 18, avgTransferTime: 85, strokeCenter: "ASRH", beds: 25 },
+            { name: "Gritman Medical", city: "Moscow", state: "ID", lat: 46.7324, lng: -117.0028, annualTransfers: 14, avgTransferTime: 90, strokeCenter: "PSC", beds: 25 },
+        ];
+
+        const emsRoutes = [
+            { name: "US-2 West", from: "Wenatchee", to: "Sacred Heart", color: "#3B82F6", coords: [[47.4235, -120.3103], [47.6588, -117.4260]], avgTime: 180, type: "ground" },
+            { name: "I-90 East", from: "Moses Lake", to: "Sacred Heart", color: "#3B82F6", coords: [[47.1301, -119.2781], [47.6588, -117.4260]], avgTime: 120, type: "ground" },
+        ];
+
+        const criticalAccessHospitals = [
+            { name: "Columbia Basin Hospital", city: "Ephrata", state: "WA", lat: 47.3176, lng: -119.5536, beds: 25 },
+            { name: "Coulee Medical Center", city: "Grand Coulee", state: "WA", lat: 47.9418, lng: -119.0033, beds: 25 },
+            { name: "Dayton General Hospital", city: "Dayton", state: "WA", lat: 46.3237, lng: -117.9726, beds: 25 },
+            { name: "Garfield County Hospital", city: "Pomeroy", state: "WA", lat: 46.4713, lng: -117.6008, beds: 25 },
+            { name: "Kittitas Valley Healthcare", city: "Ellensburg", state: "WA", lat: 46.9965, lng: -120.5478, beds: 25 },
+            { name: "Lake Chelan Community Hospital", city: "Chelan", state: "WA", lat: 47.8407, lng: -120.0161, beds: 25 },
+            { name: "Lincoln Hospital", city: "Davenport", state: "WA", lat: 47.6540, lng: -118.1498, beds: 25 },
+            { name: "Mid-Valley Hospital", city: "Omak", state: "WA", lat: 48.4107, lng: -119.5276, beds: 30 },
+            { name: "Newport Hospital", city: "Newport", state: "WA", lat: 48.1851, lng: -117.0428, beds: 24 },
+            { name: "North Valley Hospital", city: "Tonasket", state: "WA", lat: 48.7054, lng: -119.4389, beds: 25 },
+            { name: "Odessa Memorial", city: "Odessa", state: "WA", lat: 47.3334, lng: -118.6876, beds: 25 },
+            { name: "Othello Community Hospital", city: "Othello", state: "WA", lat: 46.8262, lng: -119.1754, beds: 25 },
+            { name: "Prosser Memorial", city: "Prosser", state: "WA", lat: 46.2068, lng: -119.7684, beds: 25 },
+            { name: "Quincy Valley Medical", city: "Quincy", state: "WA", lat: 47.2343, lng: -119.8526, beds: 25 },
+            { name: "Samaritan Hospital", city: "Moses Lake", state: "WA", lat: 47.1301, lng: -119.2781, beds: 50 },
+            { name: "Three Rivers Hospital", city: "Brewster", state: "WA", lat: 48.0965, lng: -119.7826, beds: 20 },
+            { name: "Whitman Hospital", city: "Colfax", state: "WA", lat: 46.8804, lng: -117.3645, beds: 25 },
+            { name: "Benewah Community Hospital", city: "St. Maries", state: "ID", lat: 47.3143, lng: -116.5626, beds: 19 },
+            { name: "Bonner General Hospital", city: "Sandpoint", state: "ID", lat: 48.2766, lng: -116.5533, beds: 25 },
+            { name: "Boundary Community Hospital", city: "Bonners Ferry", state: "ID", lat: 48.6918, lng: -116.3165, beds: 10 },
+            { name: "Clearwater Valley Hospital", city: "Orofino", state: "ID", lat: 46.4793, lng: -116.2551, beds: 23 },
+            { name: "McCall Memorial Hospital", city: "McCall", state: "ID", lat: 44.9110, lng: -116.1118, beds: 15 },
+            { name: "Shoshone Medical Center", city: "Kellogg", state: "ID", lat: 47.5276, lng: -116.1201, beds: 25 },
+            { name: "St. Mary's Hospital", city: "Cottonwood", state: "ID", lat: 46.0490, lng: -116.3482, beds: 25 },
+            { name: "Syringa Hospital", city: "Grangeville", state: "ID", lat: 45.9265, lng: -116.1220, beds: 16 },
+            { name: "Steele Memorial Medical", city: "Salmon", state: "ID", lat: 45.1757, lng: -113.8951, beds: 18 },
+            { name: "Cabinet Peaks Medical", city: "Libby", state: "MT", lat: 48.3882, lng: -115.5556, beds: 25 },
+            { name: "Clark Fork Valley Hospital", city: "Plains", state: "MT", lat: 47.4576, lng: -114.8826, beds: 25 },
+            { name: "Community Memorial Hospital", city: "Hamilton", state: "MT", lat: 46.2465, lng: -114.1593, beds: 25 },
+            { name: "St. Luke Community", city: "Ronan", state: "MT", lat: 47.5290, lng: -114.1001, beds: 25 },
+            { name: "North Valley Hospital", city: "Whitefish", state: "MT", lat: 48.4111, lng: -114.3376, beds: 25 },
+            { name: "Granite County Medical", city: "Philipsburg", state: "MT", lat: 46.3315, lng: -113.2915, beds: 10 },
+            { name: "Powell County Memorial", city: "Deer Lodge", state: "MT", lat: 46.3990, lng: -112.7340, beds: 8 },
+            { name: "Marcus Daly Memorial", city: "Hamilton", state: "MT", lat: 46.2465, lng: -114.1593, beds: 47 },
+        ];
+
+        const tribalHealthFacilities = [
+            { name: "Native Health of Spokane", city: "Spokane", state: "WA", lat: 47.6588, lng: -117.4260, type: "Urban", tribe: "Multi-tribal" },
+            { name: "Spokane Tribal Health", city: "Wellpinit", state: "WA", lat: 47.8890, lng: -117.9426, type: "Tribal", tribe: "Spokane Tribe" },
+            { name: "Kalispel Tribal Health", city: "Usk", state: "WA", lat: 48.2926, lng: -117.2876, type: "Tribal", tribe: "Kalispel" },
+            { name: "Colville Tribal Health", city: "Nespelem", state: "WA", lat: 48.1653, lng: -118.9814, type: "Tribal", tribe: "Colville Tribes" },
+            { name: "Nimiipuu Health Kamiah", city: "Kamiah", state: "ID", lat: 46.2265, lng: -116.0293, type: "Tribal", tribe: "Nez Perce" },
+            { name: "Nimiipuu Health Lapwai", city: "Lapwai", state: "ID", lat: 46.4043, lng: -116.8043, type: "Tribal", tribe: "Nez Perce" },
+            { name: "Marimn Health", city: "Plummer", state: "ID", lat: 47.3343, lng: -116.8876, type: "Tribal", tribe: "Coeur d'Alene" },
+            { name: "Kootenai Tribe Health", city: "Bonners Ferry", state: "ID", lat: 48.6918, lng: -116.3165, type: "Tribal", tribe: "Kootenai" },
+            { name: "Flathead Tribal Health", city: "St. Ignatius", state: "MT", lat: 47.3176, lng: -114.0976, type: "Tribal", tribe: "Salish-Kootenai" },
+            { name: "Arlee Health Center", city: "Arlee", state: "MT", lat: 47.1726, lng: -114.0876, type: "Tribal", tribe: "CSKT" },
+            { name: "Yakama Indian Health Center", city: "Toppenish", state: "WA", lat: 46.3793, lng: -120.3110, type: "Tribal", tribe: "Yakama Nation" },
+        ];
+
+        const lifeFlightBases = [
+            { name: "Life Flight Spokane", city: "Spokane", state: "WA", lat: 47.6193, lng: -117.5337, type: "helicopter", coverage: "Eastern WA" },
+            { name: "Life Flight Pullman", city: "Pullman", state: "WA", lat: 46.7432, lng: -117.1696, type: "helicopter", coverage: "Palouse Region" },
+            { name: "Life Flight Moses Lake", city: "Moses Lake", state: "WA", lat: 47.2093, lng: -119.3201, type: "both", coverage: "Central WA" },
+            { name: "Life Flight Walla Walla", city: "Walla Walla", state: "WA", lat: 46.0646, lng: -118.3430, type: "helicopter", coverage: "SE Washington" },
+            { name: "Life Flight Brewster", city: "Brewster", state: "WA", lat: 48.0965, lng: -119.7826, type: "helicopter", coverage: "Okanogan County" },
+            { name: "Life Flight Richland", city: "Richland", state: "WA", lat: 46.3057, lng: -119.3043, type: "both", coverage: "Tri-Cities" },
+            { name: "Life Flight Sandpoint", city: "Sandpoint", state: "ID", lat: 48.2766, lng: -116.5533, type: "helicopter", coverage: "North Idaho" },
+            { name: "Life Flight Lewiston", city: "Lewiston", state: "ID", lat: 46.3743, lng: -117.0151, type: "both", coverage: "Clearwater Region" },
+            { name: "Life Flight Coeur d'Alene", city: "Coeur d'Alene", state: "ID", lat: 47.7732, lng: -116.7885, type: "helicopter", coverage: "North Idaho" },
+            { name: "Life Flight Missoula", city: "Missoula", state: "MT", lat: 46.9165, lng: -114.0879, type: "both", coverage: "Western Montana" },
+        ];
+
+        // ===== UTILITY FUNCTIONS =====
+
+        /**
+         * Haversine formula to calculate distance between two coordinates
+         * Returns distance in kilometers
+         */
+        function haversineDistance(lat1, lng1, lat2, lng2) {
+            const R = 6371; // Earth's radius in km
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLng = (lng2 - lng1) * Math.PI / 180;
+            const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                      Math.sin(dLng / 2) * Math.sin(dLng / 2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            return R * c;
+        }
+
+        /**
+         * Convert kilometers to miles
+         */
+        function kmToMiles(km) {
+            return (km / 1.60934).toFixed(1);
+        }
+
+        /**
+         * Get color based on hospital certification
+         */
+        function getCertificationColor(certification) {
+            const colors = {
+                'CSC': '#9333ea',  // Purple
+                'TSC': '#0077C8',  // Blue
+                'PSC': '#10b981',  // Green
+            };
+            return colors[certification] || '#6b7280';
+        }
+
+        /**
+         * Create popup HTML for a hospital
+         */
+        function createHospitalPopup(hospital, distance = null) {
+            let html = `<div class="popup-title">${hospital.name}</div>`;
+            html += `<div class="popup-info">${hospital.city}, ${hospital.state}</div>`;
+            if (distance !== null) {
+                html += `<div class="popup-info"><strong>${distance} miles</strong></div>`;
+            }
+            if (hospital.certification) {
+                html += `<span class="popup-badge">${hospital.certification}</span>`;
+            }
+            return html;
+        }
+
+        /**
+         * Create popup HTML for other facilities
+         */
+        function createFacilityPopup(facility, type) {
+            let html = `<div class="popup-title">${facility.name}</div>`;
+            html += `<div class="popup-info">${facility.city}, ${facility.state}</div>`;
+            if (facility.beds) {
+                html += `<div class="popup-info">Beds: ${facility.beds}</div>`;
+            }
+            if (facility.coverage) {
+                html += `<div class="popup-info">Coverage: ${facility.coverage}</div>`;
+            }
+            if (facility.tribe) {
+                html += `<div class="popup-info">Tribe: ${facility.tribe}</div>`;
+            }
+            return html;
+        }
+
+        // ===== MAP INITIALIZATION =====
+
+        const map = L.map('map').setView([47.6588, -117.4260], 7);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors',
+            maxZoom: 19,
+        }).addTo(map);
+
+        // ===== DRAW RADII =====
+
+        // 100-mile radius (160.934 km)
+        L.circle([sacredHeart.lat, sacredHeart.lng], {
+            radius: 100 * 1.60934 * 1000, // miles to meters
+            fillColor: '#3B82F6',
+            color: '#0077C8',
+            weight: 2,
+            opacity: 0.3,
+            fillOpacity: 0.1,
+            className: 'radius-100-circle'
+        }).addTo(map);
+
+        // 200-mile radius (321.868 km)
+        L.circle([sacredHeart.lat, sacredHeart.lng], {
+            radius: 200 * 1.60934 * 1000, // miles to meters
+            fillColor: '#dbeafe',
+            color: '#93c5fd',
+            weight: 2,
+            opacity: 0.4,
+            fillOpacity: 0.05,
+            dashArray: '5, 5',
+            className: 'radius-200-circle'
+        }).addTo(map);
+
+        // ===== ADD SACRED HEART MARKER =====
+
+        const sacredHeartMarker = L.circleMarker([sacredHeart.lat, sacredHeart.lng], {
+            radius: 14,
+            fillColor: '#EB1700',
+            color: '#ffffff',
+            weight: 3,
+            opacity: 1,
+            fillOpacity: 0.95,
+            className: 'sacred-heart-pulse'
+        }).addTo(map);
+
+        sacredHeartMarker.bindPopup(createHospitalPopup(sacredHeart, 0));
+        sacredHeartMarker.on('click', function() {
+            this.openPopup();
+        });
+
+        // ===== ADD EMS ROUTES =====
+
+        emsRoutes.forEach(route => {
+            L.polyline(route.coords, {
+                color: route.color,
+                weight: 3,
+                opacity: 0.7,
+                dashArray: '5, 5'
+            }).addTo(map).bindPopup(`<div class="popup-title">${route.name}</div><div class="popup-info">Avg time: ${route.avgTime} min</div>`);
+        });
+
+        // ===== PROCESS AND ADD HOSPITALS =====
+
+        const filteredHospitals = [];
+        const hospitalsByZone = { zone1: [], zone2: [] };
+
+        hospitals.forEach(hospital => {
+            const distance = haversineDistance(sacredHeart.lat, sacredHeart.lng, hospital.lat, hospital.lng);
+            const distanceMiles = kmToMiles(distance);
+
+            if (distance <= 321.868) { // ~200 miles
+                filteredHospitals.push({ ...hospital, distance, distanceMiles });
+
+                const color = getCertificationColor(hospital.certification);
+                const marker = L.circleMarker([hospital.lat, hospital.lng], {
+                    radius: 8,
+                    fillColor: color,
+                    color: '#ffffff',
+                    weight: 2,
+                    opacity: 1,
+                    fillOpacity: 0.8
+                }).addTo(map);
+
+                marker.bindPopup(createHospitalPopup(hospital, distanceMiles));
+
+                // Sort into zones
+                if (distance <= 160.934) { // ~100 miles
+                    hospitalsByZone.zone1.push({ ...hospital, distanceMiles });
+                } else {
+                    hospitalsByZone.zone2.push({ ...hospital, distanceMiles });
+                }
+            }
+        });
+
+        // ===== PROCESS AND ADD SPOKE HOSPITALS =====
+
+        spokeHospitals.forEach(spoke => {
+            const color = '#f97316'; // Orange
+            const marker = L.circleMarker([spoke.lat, spoke.lng], {
+                radius: 8,
+                fillColor: color,
+                color: '#ffffff',
+                weight: 2,
+                opacity: 1,
+                fillOpacity: 0.8
+            }).addTo(map);
+
+            let popupHtml = `<div class="popup-title">${spoke.name}</div>`;
+            popupHtml += `<div class="popup-info">${spoke.city}, ${spoke.state}</div>`;
+            popupHtml += `<div class="popup-info">Annual Transfers: ${spoke.annualTransfers}</div>`;
+            popupHtml += `<div class="popup-info">Avg Transfer Time: ${spoke.avgTransferTime} min</div>`;
+
+            marker.bindPopup(popupHtml);
+
+            // Draw line to Sacred Heart
+            L.polyline([[spoke.lat, spoke.lng], [sacredHeart.lat, sacredHeart.lng]], {
+                color: '#f97316',
+                weight: 2,
+                opacity: 0.5,
+                dashArray: '3, 3'
+            }).addTo(map);
+        });
+
+        // ===== PROCESS AND ADD CRITICAL ACCESS HOSPITALS =====
+
+        const cahsByZone = { zone1: [], zone2: [] };
+
+        criticalAccessHospitals.forEach(cah => {
+            const distance = haversineDistance(sacredHeart.lat, sacredHeart.lng, cah.lat, cah.lng);
+            const distanceMiles = kmToMiles(distance);
+
+            if (distance <= 321.868) { // ~200 miles
+                const marker = L.circleMarker([cah.lat, cah.lng], {
+                    radius: 6,
+                    fillColor: 'transparent',
+                    color: '#ef4444',
+                    weight: 2,
+                    opacity: 0.8,
+                    fillOpacity: 0
+                }).addTo(map);
+
+                marker.bindPopup(createFacilityPopup(cah, 'CAH'));
+
+                if (distance <= 160.934) { // ~100 miles
+                    cahsByZone.zone1.push({ ...cah, distanceMiles });
+                } else {
+                    cahsByZone.zone2.push({ ...cah, distanceMiles });
+                }
+            }
+        });
+
+        // ===== PROCESS AND ADD TRIBAL FACILITIES =====
+
+        tribalHealthFacilities.forEach(tribal => {
+            const distance = haversineDistance(sacredHeart.lat, sacredHeart.lng, tribal.lat, tribal.lng);
+
+            if (distance <= 321.868) { // ~200 miles
+                const marker = L.circleMarker([tribal.lat, tribal.lng], {
+                    radius: 7,
+                    fillColor: '#06b6d4',
+                    color: '#ffffff',
+                    weight: 2,
+                    opacity: 1,
+                    fillOpacity: 0.8
+                }).addTo(map);
+
+                marker.bindPopup(createFacilityPopup(tribal, 'Tribal'));
+            }
+        });
+
+        // ===== PROCESS AND ADD LIFE FLIGHT BASES =====
+
+        lifeFlightBases.forEach(base => {
+            const distance = haversineDistance(sacredHeart.lat, sacredHeart.lng, base.lat, base.lng);
+
+            if (distance <= 321.868) { // ~200 miles
+                const marker = L.circleMarker([base.lat, base.lng], {
+                    radius: 7,
+                    fillColor: '#f59e0b',
+                    color: '#ffffff',
+                    weight: 2,
+                    opacity: 1,
+                    fillOpacity: 0.8
+                }).addTo(map);
+
+                marker.bindPopup(createFacilityPopup(base, 'Life Flight'));
+            }
+        });
+
+        // ===== UPDATE STATS =====
+
+        function updateStats() {
+            const zone1Count = hospitalsByZone.zone1.length + cahsByZone.zone1.length;
+            const zone2Count = hospitalsByZone.zone2.length + cahsByZone.zone2.length;
+            const totalCount = zone1Count + zone2Count;
+
+            document.getElementById('stat-zone1').textContent = zone1Count;
+            document.getElementById('stat-zone2').textContent = zone2Count;
+            document.getElementById('stat-total').textContent = totalCount;
+        }
+
+        updateStats();
+
+        // ===== BUILD FACILITY LIST =====
+
+        function buildFacilityList() {
+            const facilityList = document.getElementById('facilityList');
+            facilityList.innerHTML = '';
+
+            // Zone 1: 0-100 miles
+            const zone1Html = `
+                <div class="facility-zone">
+                    <div class="zone-header" onclick="toggleZone(this)">
+                        <span class="zone-header-title">0–100 Miles</span>
+                        <span class="zone-count">${hospitalsByZone.zone1.length + cahsByZone.zone1.length}</span>
+                        <span class="zone-toggle open">▼</span>
+                    </div>
+                    <div class="zone-content open">
+                        ${hospitalsByZone.zone1.map(h => `
+                            <div class="facility-item" onclick="highlightMarker(${h.lat}, ${h.lng})">
+                                <div class="facility-name">${h.name}</div>
+                                <div class="facility-meta">
+                                    <span>${h.city}, ${h.state}</span>
+                                    <span class="facility-badge">${h.distanceMiles} mi</span>
+                                </div>
+                            </div>
+                        `).join('')}
+                        ${cahsByZone.zone1.map(c => `
+                            <div class="facility-item" onclick="highlightMarker(${c.lat}, ${c.lng})">
+                                <div class="facility-name">${c.name}</div>
+                                <div class="facility-meta">
+                                    <span>${c.city}, ${c.state}</span>
+                                    <span class="facility-badge">${c.distanceMiles} mi</span>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+
+            facilityList.innerHTML += zone1Html;
+
+            // Zone 2: 100-200 miles
+            const zone2Html = `
+                <div class="facility-zone">
+                    <div class="zone-header" onclick="toggleZone(this)">
+                        <span class="zone-header-title">100–200 Miles</span>
+                        <span class="zone-count">${hospitalsByZone.zone2.length + cahsByZone.zone2.length}</span>
+                        <span class="zone-toggle">▼</span>
+                    </div>
+                    <div class="zone-content">
+                        ${hospitalsByZone.zone2.map(h => `
+                            <div class="facility-item" onclick="highlightMarker(${h.lat}, ${h.lng})">
+                                <div class="facility-name">${h.name}</div>
+                                <div class="facility-meta">
+                                    <span>${h.city}, ${h.state}</span>
+                                    <span class="facility-badge">${h.distanceMiles} mi</span>
+                                </div>
+                            </div>
+                        `).join('')}
+                        ${cahsByZone.zone2.map(c => `
+                            <div class="facility-item" onclick="highlightMarker(${c.lat}, ${c.lng})">
+                                <div class="facility-name">${c.name}</div>
+                                <div class="facility-meta">
+                                    <span>${c.city}, ${c.state}</span>
+                                    <span class="facility-badge">${c.distanceMiles} mi</span>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+
+            facilityList.innerHTML += zone2Html;
+        }
+
+        buildFacilityList();
+
+        // ===== INTERACTIVE FUNCTIONS =====
+
+        function toggleZone(element) {
+            const toggle = element.querySelector('.zone-toggle');
+            const content = element.nextElementSibling;
+
+            toggle.classList.toggle('open');
+            content.classList.toggle('open');
+        }
+
+        function highlightMarker(lat, lng) {
+            map.setView([lat, lng], 9);
+        }
+
+        // ===== SIDEBAR TOGGLE (MOBILE) =====
+
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const sidebar = document.getElementById('sidebar');
+
+        if (sidebarToggle) {
+            sidebarToggle.addEventListener('click', () => {
+                sidebar.classList.toggle('open');
+            });
+        }
+
+        // ===== SET DATE =====
+
+        const today = new Date();
+        const dateStr = today.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric'
+        });
+        document.getElementById('generatedDate').textContent = dateStr;
+    </script>
+</body>
+</html>
