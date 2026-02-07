@@ -259,6 +259,53 @@
             background: transparent;
         }
 
+        .legend-swatch {
+            width: 14px;
+            height: 14px;
+            border-radius: 2px;
+            border: 1px solid rgba(0, 0, 0, 0.2);
+        }
+
+        /* Choropleth Legend Section */
+        .choropleth-legend-section {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            padding: 12px;
+            margin-top: 12px;
+        }
+
+        .choropleth-legend-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: #1f2937;
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+        }
+
+        .choropleth-tier {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 11px;
+            margin-bottom: 6px;
+        }
+
+        .choropleth-tier:last-child {
+            margin-bottom: 0;
+        }
+
+        .choropleth-note {
+            font-size: 10px;
+            color: #6b7280;
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px solid #d1d5db;
+            font-style: italic;
+        }
+
         /* Facility Lists */
         .facility-list {
             margin-top: 20px;
@@ -407,6 +454,144 @@
             margin-top: 4px;
         }
 
+        /* County Popup Card */
+        .county-popup-card {
+            background: white;
+            border-radius: 8px;
+            padding: 14px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            font-family: 'Inter', sans-serif;
+            font-size: 12px;
+            min-width: 280px;
+        }
+
+        .county-card-header {
+            font-weight: 700;
+            color: #1f2937;
+            font-size: 13px;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e5e7eb;
+        }
+
+        .county-card-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 11px;
+            color: #4b5563;
+        }
+
+        .county-card-label {
+            font-weight: 500;
+            color: #374151;
+        }
+
+        .county-card-value {
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .county-risk-badge {
+            display: inline-block;
+            padding: 6px 10px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 11px;
+            color: white;
+            margin-top: 10px;
+            width: 100%;
+            text-align: center;
+        }
+
+        /* Choropleth Toggle Button */
+        .leaflet-control-choropleth {
+            background: white;
+            border: 2px solid #EB1700;
+            border-radius: 6px;
+            padding: 0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .choropleth-toggle-btn {
+            background: white;
+            border: none;
+            padding: 10px 14px;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-size: 12px;
+            font-weight: 600;
+            color: #1f2937;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+        }
+
+        .choropleth-toggle-btn:hover {
+            background: #EB1700;
+            color: white;
+        }
+
+        .choropleth-toggle-btn.active {
+            background: #EB1700;
+            color: white;
+        }
+
+        .choropleth-toggle-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 2px;
+            background: #d1d5db;
+            display: inline-block;
+        }
+
+        .choropleth-toggle-btn.active .choropleth-toggle-indicator {
+            background: #FFB3A7;
+        }
+
+        /* Floating Choropleth Legend */
+        .choropleth-map-legend {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            padding: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            font-family: 'Inter', sans-serif;
+            font-size: 11px;
+            z-index: 40;
+        }
+
+        .choropleth-map-legend-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            color: #1f2937;
+            letter-spacing: 0.5px;
+        }
+
+        .choropleth-map-legend-tier {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 6px;
+            font-size: 10px;
+        }
+
+        .choropleth-map-legend-tier:last-child {
+            margin-bottom: 0;
+        }
+
+        .choropleth-map-legend-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 2px;
+            border: 1px solid rgba(0, 0, 0, 0.15);
+        }
+
         /* Footer */
         .footer {
             background: #1f2937;
@@ -414,9 +599,15 @@
             padding: 12px 24px;
             font-size: 11px;
             display: flex;
+            flex-direction: column;
+            gap: 8px;
+            border-top: 1px solid #374151;
+        }
+
+        .footer-line {
+            display: flex;
             justify-content: space-between;
             align-items: center;
-            border-top: 1px solid #374151;
         }
 
         .footer-left {
@@ -426,6 +617,12 @@
         .footer-right {
             text-align: right;
             opacity: 0.8;
+        }
+
+        .footer-sources {
+            font-size: 10px;
+            opacity: 0.75;
+            line-height: 1.4;
         }
 
         /* Responsive Design */
@@ -483,6 +680,11 @@
                 flex-direction: column;
                 gap: 8px;
                 text-align: center;
+            }
+
+            .footer-line {
+                flex-direction: column;
+                gap: 4px;
             }
 
             .footer-left, .footer-right {
@@ -645,6 +847,28 @@
                         <div class="legend-circle radius-200"></div>
                         <span>200-mile radius</span>
                     </div>
+
+                    <!-- Choropleth Legend Section -->
+                    <div class="choropleth-legend-section">
+                        <div class="choropleth-legend-title">Stroke Mortality</div>
+                        <div class="legend-item">
+                            <div class="legend-swatch" style="background: #EB1700;"></div>
+                            <span>Very High (&gt;120/100K)</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-swatch" style="background: #F97316;"></div>
+                            <span>High (80–120/100K)</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-swatch" style="background: #0077C8;"></div>
+                            <span>Moderate (60–80/100K)</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-swatch" style="background: #002B5C;"></div>
+                            <span>Low (&lt;60/100K)</span>
+                        </div>
+                        <div class="choropleth-note">CDC WONDER 2018–2023 | ICD-10 I60–I69</div>
+                    </div>
                 </div>
 
                 <!-- Facility Lists -->
@@ -660,11 +884,16 @@
 
     <!-- Footer -->
     <div class="footer">
-        <div class="footer-left">
-            <strong>Cerenovus</strong> | J&J MedTech Neurovascular | PNW Territory
+        <div class="footer-line">
+            <div class="footer-left">
+                <strong>Cerenovus</strong> | J&J MedTech Neurovascular | PNW Territory
+            </div>
+            <div class="footer-right">
+                Generated <span id="generatedDate"></span> | For internal use only
+            </div>
         </div>
-        <div class="footer-right">
-            Generated <span id="generatedDate"></span> | For internal use only
+        <div class="footer-sources">
+            <strong>Sources:</strong> CDC WONDER (stroke mortality 2018–2023) | US Census ACS (population, median age) | WA DOH CHARS (hospital data) | State EMS directories | Flex Monitoring Team (CAH data) | IHS (tribal facilities)
         </div>
     </div>
 
@@ -672,6 +901,48 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
     <script>
+        // ===== COUNTY DATA WITH SIMPLIFIED POLYGONS =====
+
+        const countyData = [
+            // WASHINGTON - Eastern
+            { name: "Spokane", state: "WA", pop: 539339, strokeDeaths: 312, strokeDeathRate: 57.9, avgAge: 37.2, distMiles: 0, ems: "Spokane Co. EMS / AMR", bounds: [[47.4, -118.0], [48.0, -118.0], [48.0, -117.0], [47.4, -117.0]] },
+            { name: "Lincoln", state: "WA", pop: 10987, strokeDeaths: 14, strokeDeathRate: 127.4, avgAge: 45.8, distMiles: 38, ems: "Lincoln Co. Fire/EMS", bounds: [[47.4, -118.9], [47.9, -118.9], [47.9, -117.9], [47.4, -117.9]] },
+            { name: "Stevens", state: "WA", pop: 46345, strokeDeaths: 42, strokeDeathRate: 90.6, avgAge: 42.3, distMiles: 55, ems: "Stevens Co. EMS / LifeFlight", bounds: [[47.8, -118.2], [48.9, -118.2], [48.9, -117.2], [47.8, -117.2]] },
+            { name: "Pend Oreille", state: "WA", pop: 13724, strokeDeaths: 16, strokeDeathRate: 116.6, avgAge: 46.1, distMiles: 60, ems: "Pend Oreille Co. Fire/EMS", bounds: [[48.0, -117.5], [49.0, -117.5], [49.0, -117.0], [48.0, -117.0]] },
+            { name: "Whitman", state: "WA", pop: 50804, strokeDeaths: 22, strokeDeathRate: 43.3, avgAge: 24.8, distMiles: 65, ems: "Whitman Co. Ambulance / WSU EMS", bounds: [[46.4, -118.0], [47.3, -118.0], [47.3, -117.0], [46.4, -117.0]] },
+            { name: "Adams", state: "WA", pop: 20668, strokeDeaths: 18, strokeDeathRate: 87.1, avgAge: 30.2, distMiles: 85, ems: "Adams Co. Ambulance", bounds: [[46.6, -119.2], [47.2, -119.2], [47.2, -118.2], [46.6, -118.2]] },
+            { name: "Ferry", state: "WA", pop: 7966, strokeDeaths: 10, strokeDeathRate: 125.6, avgAge: 47.3, distMiles: 80, ems: "Ferry Co. EMS / LifeFlight", bounds: [[48.0, -119.0], [49.0, -119.0], [49.0, -118.0], [48.0, -118.0]] },
+            { name: "Grant", state: "WA", pop: 99123, strokeDeaths: 76, strokeDeathRate: 76.7, avgAge: 33.1, distMiles: 110, ems: "Grant Co. Fire #5 / AMR", bounds: [[46.7, -120.0], [47.6, -120.0], [47.6, -119.0], [46.7, -119.0]] },
+            { name: "Okanogan", state: "WA", pop: 42243, strokeDeaths: 48, strokeDeathRate: 113.6, avgAge: 42.6, distMiles: 120, ems: "Okanogan Co. Ambulance / LifeFlight", bounds: [[47.8, -120.8], [49.0, -120.8], [49.0, -119.4], [47.8, -119.4]] },
+            { name: "Douglas", state: "WA", pop: 43429, strokeDeaths: 32, strokeDeathRate: 73.7, avgAge: 35.2, distMiles: 130, ems: "Douglas Co. Fire / LifeFlight", bounds: [[47.2, -120.7], [47.9, -120.7], [47.9, -119.7], [47.2, -119.7]] },
+            { name: "Chelan", state: "WA", pop: 80492, strokeDeaths: 56, strokeDeathRate: 69.6, avgAge: 38.4, distMiles: 140, ems: "Chelan Co. Fire / LifeFlight", bounds: [[47.3, -121.2], [48.2, -121.2], [48.2, -120.1], [47.3, -120.1]] },
+            { name: "Walla Walla", state: "WA", pop: 62584, strokeDeaths: 52, strokeDeathRate: 83.1, avgAge: 37.6, distMiles: 150, ems: "Walla Walla Fire / AMR", bounds: [[45.9, -119.0], [46.4, -119.0], [46.4, -118.0], [45.9, -118.0]] },
+            { name: "Columbia", state: "WA", pop: 4064, strokeDeaths: 6, strokeDeathRate: 147.6, avgAge: 49.2, distMiles: 130, ems: "Columbia Co. Ambulance", bounds: [[46.0, -118.2], [46.4, -118.2], [46.4, -117.7], [46.0, -117.7]] },
+            { name: "Garfield", state: "WA", pop: 2247, strokeDeaths: 4, strokeDeathRate: 178.0, avgAge: 50.1, distMiles: 100, ems: "Garfield Co. Ambulance", bounds: [[46.0, -117.7], [46.5, -117.7], [46.5, -117.3], [46.0, -117.3]] },
+            { name: "Asotin", state: "WA", pop: 22582, strokeDeaths: 24, strokeDeathRate: 106.3, avgAge: 42.8, distMiles: 105, ems: "Asotin Co. Fire / AMR", bounds: [[45.9, -117.5], [46.4, -117.5], [46.4, -117.0], [45.9, -117.0]] },
+            { name: "Franklin", state: "WA", pop: 95222, strokeDeaths: 48, strokeDeathRate: 50.4, avgAge: 28.8, distMiles: 140, ems: "Pasco Fire / AMR", bounds: [[46.0, -119.5], [46.7, -119.5], [46.7, -118.8], [46.0, -118.8]] },
+            { name: "Benton", state: "WA", pop: 204390, strokeDeaths: 126, strokeDeathRate: 61.6, avgAge: 35.6, distMiles: 145, ems: "Richland Fire / AMR / LifeFlight", bounds: [[45.9, -120.0], [46.6, -120.0], [46.6, -119.1], [45.9, -119.1]] },
+            // IDAHO - Northern
+            { name: "Kootenai", state: "ID", pop: 171003, strokeDeaths: 108, strokeDeathRate: 63.2, avgAge: 38.5, distMiles: 35, ems: "Kootenai Co. Fire/EMS / AMR", bounds: [[47.3, -117.0], [47.9, -117.0], [47.9, -116.3], [47.3, -116.3]] },
+            { name: "Bonner", state: "ID", pop: 47110, strokeDeaths: 38, strokeDeathRate: 80.7, avgAge: 43.2, distMiles: 80, ems: "Bonner Co. EMS / LifeFlight", bounds: [[47.9, -117.0], [48.8, -117.0], [48.8, -116.0], [47.9, -116.0]] },
+            { name: "Boundary", state: "ID", pop: 12783, strokeDeaths: 14, strokeDeathRate: 109.5, avgAge: 44.8, distMiles: 95, ems: "Boundary Co. Ambulance", bounds: [[48.7, -116.8], [49.0, -116.8], [49.0, -116.0], [48.7, -116.0]] },
+            { name: "Shoshone", state: "ID", pop: 13177, strokeDeaths: 16, strokeDeathRate: 121.4, avgAge: 44.1, distMiles: 70, ems: "Shoshone Co. Ambulance / LifeFlight", bounds: [[47.2, -116.3], [47.6, -116.3], [47.6, -115.5], [47.2, -115.5]] },
+            { name: "Benewah", state: "ID", pop: 9511, strokeDeaths: 12, strokeDeathRate: 126.2, avgAge: 43.6, distMiles: 50, ems: "Benewah Co. Ambulance", bounds: [[46.9, -117.0], [47.4, -117.0], [47.4, -116.4], [46.9, -116.4]] },
+            { name: "Latah", state: "ID", pop: 40862, strokeDeaths: 16, strokeDeathRate: 39.2, avgAge: 25.6, distMiles: 80, ems: "Moscow VFD / Gritman Ambulance", bounds: [[46.4, -117.2], [47.0, -117.2], [47.0, -116.4], [46.4, -116.4]] },
+            { name: "Nez Perce", state: "ID", pop: 41880, strokeDeaths: 38, strokeDeathRate: 90.7, avgAge: 39.8, distMiles: 100, ems: "Lewiston Fire / AMR", bounds: [[46.0, -117.2], [46.5, -117.2], [46.5, -116.5], [46.0, -116.5]] },
+            { name: "Clearwater", state: "ID", pop: 9080, strokeDeaths: 12, strokeDeathRate: 132.2, avgAge: 47.2, distMiles: 95, ems: "Clearwater Co. Ambulance", bounds: [[46.3, -116.5], [46.9, -116.5], [46.9, -115.6], [46.3, -115.6]] },
+            { name: "Idaho", state: "ID", pop: 17198, strokeDeaths: 20, strokeDeathRate: 116.3, avgAge: 45.3, distMiles: 120, ems: "Idaho Co. Ambulance / LifeFlight", bounds: [[45.0, -116.5], [46.3, -116.5], [46.3, -114.5], [45.0, -114.5]] },
+            { name: "Lewis", state: "ID", pop: 3972, strokeDeaths: 6, strokeDeathRate: 151.1, avgAge: 44.6, distMiles: 110, ems: "Lewis Co. Ambulance", bounds: [[46.0, -116.7], [46.3, -116.7], [46.3, -116.2], [46.0, -116.2]] },
+            // MONTANA - Western
+            { name: "Mineral", state: "MT", pop: 4397, strokeDeaths: 6, strokeDeathRate: 136.5, avgAge: 49.8, distMiles: 130, ems: "Mineral Co. Ambulance", bounds: [[46.7, -116.1], [47.2, -116.1], [47.2, -115.0], [46.7, -115.0]] },
+            { name: "Sanders", state: "MT", pop: 12281, strokeDeaths: 16, strokeDeathRate: 130.3, avgAge: 50.2, distMiles: 150, ems: "Sanders Co. Ambulance / LifeFlight", bounds: [[47.2, -116.1], [48.0, -116.1], [48.0, -114.7], [47.2, -114.7]] },
+            { name: "Lincoln", state: "MT", pop: 19839, strokeDeaths: 22, strokeDeathRate: 110.9, avgAge: 47.6, distMiles: 140, ems: "Lincoln Co. Ambulance / LifeFlight", bounds: [[47.9, -116.1], [49.0, -116.1], [49.0, -115.0], [47.9, -115.0]] },
+            { name: "Missoula", state: "MT", pop: 119600, strokeDeaths: 62, strokeDeathRate: 51.8, avgAge: 33.4, distMiles: 200, ems: "Missoula Fire / AMR / LifeFlight", bounds: [[46.6, -114.8], [47.4, -114.8], [47.4, -113.2], [46.6, -113.2]] },
+            { name: "Ravalli", state: "MT", pop: 44174, strokeDeaths: 44, strokeDeathRate: 99.6, avgAge: 46.3, distMiles: 195, ems: "Ravalli Co. Ambulance / LifeFlight", bounds: [[45.8, -114.7], [46.7, -114.7], [46.7, -113.7], [45.8, -113.7]] },
+            { name: "Lake", state: "MT", pop: 31008, strokeDeaths: 28, strokeDeathRate: 90.3, avgAge: 41.8, distMiles: 175, ems: "Lake Co. Ambulance / LifeFlight", bounds: [[47.2, -114.7], [47.9, -114.7], [47.9, -113.6], [47.2, -113.6]] },
+            { name: "Flathead", state: "MT", pop: 104357, strokeDeaths: 72, strokeDeathRate: 69.0, avgAge: 40.1, distMiles: 180, ems: "Flathead Co. Ambulance / ALERT / LifeFlight", bounds: [[47.7, -114.9], [49.0, -114.9], [49.0, -113.5], [47.7, -113.5]] },
+        ];
+
         // ===== EMBEDDED DATA =====
 
         const sacredHeart = {
@@ -788,12 +1059,8 @@
 
         // ===== UTILITY FUNCTIONS =====
 
-        /**
-         * Haversine formula to calculate distance between two coordinates
-         * Returns distance in kilometers
-         */
         function haversineDistance(lat1, lng1, lat2, lng2) {
-            const R = 6371; // Earth's radius in km
+            const R = 6371;
             const dLat = (lat2 - lat1) * Math.PI / 180;
             const dLng = (lng2 - lng1) * Math.PI / 180;
             const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
@@ -803,28 +1070,19 @@
             return R * c;
         }
 
-        /**
-         * Convert kilometers to miles
-         */
         function kmToMiles(km) {
             return (km / 1.60934).toFixed(1);
         }
 
-        /**
-         * Get color based on hospital certification
-         */
         function getCertificationColor(certification) {
             const colors = {
-                'CSC': '#9333ea',  // Purple
-                'TSC': '#0077C8',  // Blue
-                'PSC': '#10b981',  // Green
+                'CSC': '#9333ea',
+                'TSC': '#0077C8',
+                'PSC': '#10b981',
             };
             return colors[certification] || '#6b7280';
         }
 
-        /**
-         * Create popup HTML for a hospital
-         */
         function createHospitalPopup(hospital, distance = null) {
             let html = `<div class="popup-title">${hospital.name}</div>`;
             html += `<div class="popup-info">${hospital.city}, ${hospital.state}</div>`;
@@ -837,9 +1095,6 @@
             return html;
         }
 
-        /**
-         * Create popup HTML for other facilities
-         */
         function createFacilityPopup(facility, type) {
             let html = `<div class="popup-title">${facility.name}</div>`;
             html += `<div class="popup-info">${facility.city}, ${facility.state}</div>`;
@@ -855,6 +1110,51 @@
             return html;
         }
 
+        function getStrokeRiskLevel(rate) {
+            if (rate > 120) return "Very High";
+            if (rate >= 80) return "High";
+            if (rate >= 60) return "Moderate";
+            return "Low";
+        }
+
+        function getStrokeRiskColor(rate) {
+            if (rate > 120) return "#EB1700";
+            if (rate >= 80) return "#F97316";
+            if (rate >= 60) return "#0077C8";
+            return "#002B5C";
+        }
+
+        function createCountyPopup(county) {
+            const riskLevel = getStrokeRiskLevel(county.strokeDeathRate);
+            const riskColor = getStrokeRiskColor(county.strokeDeathRate);
+
+            let html = `<div class="county-popup-card">`;
+            html += `<div class="county-card-header">${county.name}, ${county.state}</div>`;
+            html += `<div class="county-card-row">
+                        <span class="county-card-label">Population:</span>
+                        <span class="county-card-value">${county.pop.toLocaleString()}</span>
+                     </div>`;
+            html += `<div class="county-card-row">
+                        <span class="county-card-label">Stroke Deaths:</span>
+                        <span class="county-card-value">${county.strokeDeaths} (${county.strokeDeathRate}/100K)</span>
+                     </div>`;
+            html += `<div class="county-card-row">
+                        <span class="county-card-label">Avg Age:</span>
+                        <span class="county-card-value">${county.avgAge}</span>
+                     </div>`;
+            html += `<div class="county-card-row">
+                        <span class="county-card-label">Distance:</span>
+                        <span class="county-card-value">${county.distMiles} mi from Spokane</span>
+                     </div>`;
+            html += `<div class="county-card-row">
+                        <span class="county-card-label">EMS Service:</span>
+                        <span class="county-card-value" style="font-size: 10px;">${county.ems}</span>
+                     </div>`;
+            html += `<div class="county-risk-badge" style="background-color: ${riskColor};">Risk Level: ${riskLevel}</div>`;
+            html += `</div>`;
+            return html;
+        }
+
         // ===== MAP INITIALIZATION =====
 
         const map = L.map('map').setView([47.6588, -117.4260], 7);
@@ -864,11 +1164,143 @@
             maxZoom: 19,
         }).addTo(map);
 
+        // ===== CHOROPLETH LAYER MANAGEMENT =====
+
+        let choroplethGroup = L.layerGroup();
+        let choroplethActive = false;
+        let countyPolygons = [];
+
+        function initializeChoropleth() {
+            countyData.forEach(county => {
+                const color = getStrokeRiskColor(county.strokeDeathRate);
+                const polygon = L.polygon(county.bounds, {
+                    color: color,
+                    weight: 1,
+                    opacity: 1,
+                    fillColor: color,
+                    fillOpacity: 0.3,
+                    className: 'county-polygon'
+                });
+
+                polygon.bindPopup(createCountyPopup(county));
+                polygon.on('mouseover', function() {
+                    this.setStyle({ fillOpacity: 0.5, weight: 2 });
+                });
+                polygon.on('mouseout', function() {
+                    this.setStyle({ fillOpacity: 0.3, weight: 1 });
+                });
+
+                countyPolygons.push(polygon);
+                choroplethGroup.addLayer(polygon);
+            });
+        }
+
+        initializeChoropleth();
+
+        // ===== CHOROPLETH TOGGLE CONTROL =====
+
+        const ChoroplethControl = L.Control.extend({
+            options: {
+                position: 'topright'
+            },
+            onAdd: function(map) {
+                const container = L.DomUtil.create('div', 'leaflet-control-choropleth');
+                const button = L.DomUtil.create('button', 'choropleth-toggle-btn', container);
+                button.innerHTML = '<span class="choropleth-toggle-indicator"></span> Stroke Risk Map';
+
+                L.DomEvent.on(button, 'click', function(e) {
+                    L.DomEvent.stopPropagation(e);
+                    toggleChoropleth(button);
+                });
+
+                return container;
+            }
+        });
+
+        const choroplethControl = new ChoroplethControl();
+        choroplethControl.addTo(map);
+
+        function toggleChoropleth(button) {
+            choroplethActive = !choroplethActive;
+
+            if (choroplethActive) {
+                choroplethGroup.addTo(map);
+                button.classList.add('active');
+                addChoroplethLegend();
+                dimFacilityMarkers();
+            } else {
+                map.removeLayer(choroplethGroup);
+                button.classList.remove('active');
+                removeChoroplethLegend();
+                restoreFacilityMarkers();
+            }
+        }
+
+        let choroplethLegendControl = null;
+
+        function addChoroplethLegend() {
+            if (choroplethLegendControl) return;
+
+            const ChoroplethLegendControl = L.Control.extend({
+                options: { position: 'bottomleft' },
+                onAdd: function(map) {
+                    const container = L.DomUtil.create('div', 'choropleth-map-legend');
+                    container.innerHTML = `
+                        <div class="choropleth-map-legend-title">Stroke Mortality Rate</div>
+                        <div class="choropleth-map-legend-tier">
+                            <div class="choropleth-map-legend-color" style="background: #EB1700;"></div>
+                            <span>Very High (&gt;120/100K)</span>
+                        </div>
+                        <div class="choropleth-map-legend-tier">
+                            <div class="choropleth-map-legend-color" style="background: #F97316;"></div>
+                            <span>High (80–120/100K)</span>
+                        </div>
+                        <div class="choropleth-map-legend-tier">
+                            <div class="choropleth-map-legend-color" style="background: #0077C8;"></div>
+                            <span>Moderate (60–80/100K)</span>
+                        </div>
+                        <div class="choropleth-map-legend-tier">
+                            <div class="choropleth-map-legend-color" style="background: #002B5C;"></div>
+                            <span>Low (&lt;60/100K)</span>
+                        </div>
+                    `;
+                    return container;
+                }
+            });
+
+            choroplethLegendControl = new ChoroplethLegendControl();
+            choroplethLegendControl.addTo(map);
+        }
+
+        function removeChoroplethLegend() {
+            if (choroplethLegendControl) {
+                map.removeControl(choroplethLegendControl);
+                choroplethLegendControl = null;
+            }
+        }
+
+        let facilityMarkers = [];
+
+        function dimFacilityMarkers() {
+            map.eachLayer(function(layer) {
+                if (layer instanceof L.CircleMarker && layer !== sacredHeartMarker) {
+                    layer.setStyle({ opacity: 0.5, fillOpacity: 0.4 });
+                }
+            });
+        }
+
+        function restoreFacilityMarkers() {
+            map.eachLayer(function(layer) {
+                if (layer instanceof L.CircleMarker && layer !== sacredHeartMarker) {
+                    layer.setStyle({ opacity: 1, fillOpacity: 0.8 });
+                }
+            });
+        }
+
         // ===== DRAW RADII =====
 
-        // 100-mile radius (160.934 km)
         L.circle([sacredHeart.lat, sacredHeart.lng], {
-            radius: 100 * 1.60934 * 1000, // miles to meters
+            radius: 100 * 1.60934 * 1000,
             fillColor: '#3B82F6',
             color: '#0077C8',
             weight: 2,
@@ -877,9 +1309,8 @@
             className: 'radius-100-circle'
         }).addTo(map);
 
-        // 200-mile radius (321.868 km)
         L.circle([sacredHeart.lat, sacredHeart.lng], {
-            radius: 200 * 1.60934 * 1000, // miles to meters
+            radius: 200 * 1.60934 * 1000,
             fillColor: '#dbeafe',
             color: '#93c5fd',
             weight: 2,
@@ -926,7 +1357,7 @@
             const distance = haversineDistance(sacredHeart.lat, sacredHeart.lng, hospital.lat, hospital.lng);
             const distanceMiles = kmToMiles(distance);
 
-            if (distance <= 321.868) { // ~200 miles
+            if (distance <= 321.868) {
                 filteredHospitals.push({ ...hospital, distance, distanceMiles });
 
                 const color = getCertificationColor(hospital.certification);
@@ -941,8 +1372,7 @@
 
                 marker.bindPopup(createHospitalPopup(hospital, distanceMiles));
 
-                // Sort into zones
-                if (distance <= 160.934) { // ~100 miles
+                if (distance <= 160.934) {
                     hospitalsByZone.zone1.push({ ...hospital, distanceMiles });
                 } else {
                     hospitalsByZone.zone2.push({ ...hospital, distanceMiles });
@@ -953,7 +1383,7 @@
         // ===== PROCESS AND ADD SPOKE HOSPITALS =====
 
         spokeHospitals.forEach(spoke => {
-            const color = '#f97316'; // Orange
+            const color = '#f97316';
             const marker = L.circleMarker([spoke.lat, spoke.lng], {
                 radius: 8,
                 fillColor: color,
@@ -970,7 +1400,6 @@
 
             marker.bindPopup(popupHtml);
 
-            // Draw line to Sacred Heart
             L.polyline([[spoke.lat, spoke.lng], [sacredHeart.lat, sacredHeart.lng]], {
                 color: '#f97316',
                 weight: 2,
@@ -987,7 +1416,7 @@
             const distance = haversineDistance(sacredHeart.lat, sacredHeart.lng, cah.lat, cah.lng);
             const distanceMiles = kmToMiles(distance);
 
-            if (distance <= 321.868) { // ~200 miles
+            if (distance <= 321.868) {
                 const marker = L.circleMarker([cah.lat, cah.lng], {
                     radius: 6,
                     fillColor: 'transparent',
@@ -999,7 +1428,7 @@
 
                 marker.bindPopup(createFacilityPopup(cah, 'CAH'));
 
-                if (distance <= 160.934) { // ~100 miles
+                if (distance <= 160.934) {
                     cahsByZone.zone1.push({ ...cah, distanceMiles });
                 } else {
                     cahsByZone.zone2.push({ ...cah, distanceMiles });
@@ -1012,7 +1441,7 @@
         tribalHealthFacilities.forEach(tribal => {
             const distance = haversineDistance(sacredHeart.lat, sacredHeart.lng, tribal.lat, tribal.lng);
 
-            if (distance <= 321.868) { // ~200 miles
+            if (distance <= 321.868) {
                 const marker = L.circleMarker([tribal.lat, tribal.lng], {
                     radius: 7,
                     fillColor: '#06b6d4',
@@ -1031,7 +1460,7 @@
         lifeFlightBases.forEach(base => {
             const distance = haversineDistance(sacredHeart.lat, sacredHeart.lng, base.lat, base.lng);
 
-            if (distance <= 321.868) { // ~200 miles
+            if (distance <= 321.868) {
                 const marker = L.circleMarker([base.lat, base.lng], {
                     radius: 7,
                     fillColor: '#f59e0b',
@@ -1065,7 +1494,6 @@
             const facilityList = document.getElementById('facilityList');
             facilityList.innerHTML = '';
 
-            // Zone 1: 0-100 miles
             const zone1Html = `
                 <div class="facility-zone">
                     <div class="zone-header" onclick="toggleZone(this)">
@@ -1098,7 +1526,6 @@
 
             facilityList.innerHTML += zone1Html;
 
-            // Zone 2: 100-200 miles
             const zone2Html = `
                 <div class="facility-zone">
                     <div class="zone-header" onclick="toggleZone(this)">
